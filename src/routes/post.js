@@ -8,7 +8,7 @@ const { ROUTES } = require("../utils/constants");
 const router = Router();
 const { INDEX } = ROUTES;
 
-router.post(INDEX, getAllPostsController);
+router.get(INDEX, getAllPostsController);
 router.post(INDEX, createPostController);
 
 module.exports = router;
