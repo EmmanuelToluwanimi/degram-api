@@ -4,7 +4,9 @@
   "description": "Degram is a mini social platform, also an assesment test from a company. It involves basic features of a socail media platform such as follow features, autentication, live chat, image upload and posts.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
   "keywords": [
     "social",
