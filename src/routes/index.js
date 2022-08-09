@@ -11,7 +11,7 @@ const {HEALTHCHECK, AUTH, USER, POST} = ROUTES
  * @param app app is an express function
  */ 
 function routes(app) {
-    app.use(HEALTHCHECK, (req, res)=> {res.send("OK")});
+    app.get(HEALTHCHECK, (req, res)=> {res.send("OK")});
     app.use(AUTH, authRouter);
     app.use(USER, userRouter);
     app.use(POST, postRouter);
