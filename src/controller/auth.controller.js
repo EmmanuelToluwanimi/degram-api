@@ -60,7 +60,7 @@ const LoginUserController = async(req, res) => {
             res,
             status: "success",
             statusCode: 200,
-            message: "User registered successfully",
+            message: "Login successfully",
             data: user
         })
     } catch (error) {

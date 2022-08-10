@@ -6,11 +6,19 @@ const storeUser = async (user) => {
 }
 
 const findUserByUsername = async (username) => {
-    return await User.findOne({username});
+    return await User.findOne({
+        where: {
+            username
+        }
+    });
 }
 
 const findUserByUid = async (uid) => {
-    return await User.findOne({uid});
+    return await User.findOne({
+        where: {
+            uid
+        }
+    });
 }
 
 
