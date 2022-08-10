@@ -1,4 +1,23 @@
+const { customAlphabet } = require("nanoid");
+const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 16);
+const bcrypt = require("bcrypt");
+
 const PORT = process.env.PORT || 5000;
+const secretKey = process.env.SECRET_KEY;
+const algoType = "HS256";
+const accessTokenTtl = "30m";
+const refreshTokenTtl = "30d";
+const saltRounds = 10;
+const cookieTtl = 24 * 60 * 60 * 1000;
+
+const dbConfig = {
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DIALECT,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+}
+
 const ROUTES = {
   HEALTHCHECK: "/api/healthcheck",
   AUTH: "/api/auth",
@@ -14,17 +33,28 @@ const ROUTES = {
   INDEX: "/",
 };
 
+const formatJoiMessage = (message) => {
+  return message.replace('"', "").replace('"', "");
+};
+
+const generateUid = () => {
+  return nanoid();
+};
+
+const hashPassword = async (password) => {
+  const salt = await bcrypt.genSalt(saltRounds);
+  return await bcrypt.hash(password, salt);
+};
+
+const comparePassword = async (password, hash) => {
+  return await bcrypt.compare(password, hash);
+}
+
 /**
  * Handles management of all failed requests
  * @param res http response object
  */
-function errorResponse({
-  res,
-  message,
-  error,
-  status,
-  statusCode = 500,
-}) {
+function errorResponse({ res, message, error, status, statusCode = 500 }) {
   res.status(statusCode).json({ status, message, ...(error && { error }) });
 }
 
@@ -32,14 +62,24 @@ function errorResponse({
  * Handles sending responses to the front end.
  * @param res http response object
  */
-function okResponse({
-  res,
-  message,
-  data,
-  status,
-  statusCode = 200,
-}) {
+function okResponse({ res, message, data, status, statusCode = 200 }) {
   res.status(statusCode).json({ status, message, ...(data && { data }) });
 }
 
-module.exports = { PORT, ROUTES, errorResponse, okResponse };
+module.exports = {
+  PORT,
+  ROUTES,
+  secretKey,
+  algoType,
+  dbConfig,
+  accessTokenTtl,
+  refreshTokenTtl,
+  saltRounds,
+  cookieTtl,
+  errorResponse,
+  okResponse,
+  formatJoiMessage,
+  generateUid,
+  hashPassword,
+  comparePassword,
+};

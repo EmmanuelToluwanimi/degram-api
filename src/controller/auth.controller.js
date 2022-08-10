@@ -1,16 +1,32 @@
-const { errorResponse, okResponse } = require("../utils/constants");
+const { errorResponse, okResponse, generateUid } = require("../utils/constants");
+const User = require("../model/user.model");
+const { createUser, loginUser } = require("../service/auth.service");
 
 
 
-const registerUserController = (req, res) => {
+const registerUserController = async (req, res) => {
    
     try {
+        const {message, statusCode, user, accessToken} = await createUser(req.body);
+        if(message){
+            return errorResponse({
+                res,
+                status: 'fail',
+                statusCode,
+                message
+            })
+        }
+
+        if (accessToken) {
+            res.setHeader("x-token", accessToken);
+        }
+
         return okResponse({
             res,
             status: "success",
             statusCode: 200,
             message: "User registered successfully",
-            data: {}
+            data: user
         })
     } catch (error) {
         console.log(error?.message || error);
@@ -22,15 +38,30 @@ const registerUserController = (req, res) => {
     }
 }
 
-const LoginUserController = (req, res) => {
+const LoginUserController = async(req, res) => {
    
     try {
+
+        const {message, statusCode, user, accessToken} = await loginUser(req.body);
+        if(message){
+            return errorResponse({
+                res,
+                status: 'fail',
+                statusCode,
+                message
+            })
+        }
+
+        if (accessToken) {
+            res.setHeader("x-token", accessToken);
+        }
+
         return okResponse({
             res,
             status: "success",
             statusCode: 200,
             message: "User registered successfully",
-            data: {}
+            data: user
         })
     } catch (error) {
         console.log(error?.message || error);
