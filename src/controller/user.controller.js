@@ -146,15 +146,25 @@ const getAllFollowingController = async (req, res) => {
     }
 }
 
-const getUserInfoController = (req, res) => {
-   
+const getUserInfoController = async (req, res) => {
+    const { id } = req.params;
     try {
+        const {message, statusCode, user} = await userProfile(id);
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
+
         return okResponse({
             res,
             status: "success",
             statusCode: 200,
             message: "Successful request",
-            data: {}
+            data: user
         })
     } catch (error) {
         console.log(error?.message || error);
