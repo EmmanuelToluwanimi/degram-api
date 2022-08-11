@@ -62,15 +62,12 @@ const findFollowing = async (user) => {
     });
 }
 
-const findFollowers = async (followedId) => {
-    return await Follower.findAll({
-        where: {
-            followedId
-        },
+const findFollowers = async (user) => {
+    return await user.getFollowed({
         attributes: {
-            exclude: ['createdAt', 'updatedAt'],
+            exclude: ['password', 'createdAt', 'updatedAt']
         }
-    });
+    })
 }
 
 

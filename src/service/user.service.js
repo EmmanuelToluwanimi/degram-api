@@ -21,7 +21,6 @@ const addFollower = async(userId, followedId) => {
         }
 
         const check = await isFollowing(userId, followedId);
-        // console.log("check", check);
         if (check) {
             return {
                 message: "Oops, you are already following this user",
@@ -34,8 +33,6 @@ const addFollower = async(userId, followedId) => {
         await follow(currentUser, follower);
 
         const followings = await findFollowing(currentUser);
-        // const followings = await currentUser.getUser()
-        // console.log("followings", followings);
         return {
             followings,
         }
@@ -55,6 +52,7 @@ const removeFollower = async(userId, followedId) => {
             }
         }
 
+        const user = await findUserById(userId);
         const follower = await findUserById(followedId)
         if (!follower) {
             return {
@@ -68,7 +66,7 @@ const removeFollower = async(userId, followedId) => {
             followedId
         });
 
-        const followings = await findFollowing(userId);
+        const followings = await findFollowing(user);
         return {
             followings,
         }
@@ -80,7 +78,8 @@ const removeFollower = async(userId, followedId) => {
 
 const allFollowers = async(userId) => {
     try {
-        const followers = await findFollowers(userId);
+        const user = await findUserById(userId);
+        const followers = await findFollowers(user);
         return {
             followers,
         }
