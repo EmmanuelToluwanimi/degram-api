@@ -25,27 +25,27 @@ const findUserById = async (id) => {
     });
 }
 
-const follow = async (data) => {
-    return await Follower.create(data);
+const follow = async (user, followed) => {
+    return await user.addUser(followed);
 }
 
 const unfollow = async (data) => {
     return await Follower.destroy({
         where: {
             userId: data.userId,
-            followerId: data.followerId
+            followedId: data.followedId
         }
     });
 }
 
 
-const isFollowing = async (userId, followerId) => {
+const isFollowing = async (userId, followedId) => {
     try {
         
         const check = await Follower.findOne({
             where: {
                 userId,
-                followerId,
+                followedId,
             },
         });
         return check ? true : false;
@@ -54,24 +54,21 @@ const isFollowing = async (userId, followerId) => {
     }
 };
 
-const findFollowing = async (userId) => {
-    return await Follower.findAll({
-        where: {
-            userId
-        },
+const findFollowing = async (user) => {
+    return await user.getUser({
         attributes: {
-            exclude: ['createdAt', 'updatedAt']
+            exclude: ['password', 'createdAt', 'updatedAt']
         }
     });
 }
 
-const findFollowers = async (followerId) => {
+const findFollowers = async (followedId) => {
     return await Follower.findAll({
         where: {
-            followerId
+            followedId
         },
         attributes: {
-            exclude: ['createdAt', 'updatedAt']
+            exclude: ['createdAt', 'updatedAt'],
         }
     });
 }

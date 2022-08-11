@@ -18,20 +18,26 @@ const User = db.define("User", {
   },
 });
 
-User.associate = (models) => {
-  // post association
+// User.associate = (models) => {
+//   // post association
+  
+// };
 
-  User.belongsToMany(models.User, {
-    foreignKey: "userId",
-    as: "followers",
-    through: models.UserFollowers,
-  });
+// User.hasMany(Post, { 
+//   foreignKey: 'userId',
+//   onDelete: 'CASCADE'
+// });
 
-  User.belongsToMany(models.User, {
-    foreignKey: "followerId",
-    as: "following",
-    through: models.UserFollowers,
-  });
-};
+User.belongsToMany(User, {
+  foreignKey: "userId",
+  as: "User",
+  through: "Follow",
+});
+
+User.belongsToMany(User, {
+  foreignKey: "followedId",
+  as: "Followed",
+  through: "Follow",
+});
 
 module.exports = User;

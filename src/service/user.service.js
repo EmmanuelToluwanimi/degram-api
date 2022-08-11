@@ -1,18 +1,18 @@
 const User = require("../model/user.model");
 const { follow, findUserById, findFollowers, unfollow, findFollowing, isFollowing } = require("../repo/user.repo");
 
-const addFollower = async(userId, followerId) => {
+const addFollower = async(userId, followedId) => {
     
     try {
      
-        if (userId == followerId) {
+        if (userId == followedId) {
             return {
                 message: "Oops, you can't follow yourself",
                 statusCode: 400
             }
         }
 
-        const follower = await findUserById(followerId)
+        const follower = await findUserById(followedId)
         if (!follower) {
             return {
                 message: "User not found",
@@ -20,20 +20,22 @@ const addFollower = async(userId, followerId) => {
             }
         }
 
-        const check = await isFollowing(userId, followerId);
+        const check = await isFollowing(userId, followedId);
+        // console.log("check", check);
         if (check) {
             return {
                 message: "Oops, you are already following this user",
                 statusCode: 400
             }
         }
-        
-        await follow({
-            userId,
-            followerId
-        });
 
-        const followings = await findFollowing(userId);
+        const currentUser = await findUserById(userId);
+        
+        await follow(currentUser, follower);
+
+        const followings = await findFollowing(currentUser);
+        // const followings = await currentUser.getUser()
+        // console.log("followings", followings);
         return {
             followings,
         }
@@ -43,17 +45,17 @@ const addFollower = async(userId, followerId) => {
     }
 }
 
-const removeFollower = async(userId, followerId) => {
+const removeFollower = async(userId, followedId) => {
     try {
 
-        if (userId === followerId) {
+        if (userId == followedId) {
             return {
                 message: "Oops, you can't unfollow yourself",
                 statusCode: 400
             }
         }
 
-        const follower = await findUserById(followerId)
+        const follower = await findUserById(followedId)
         if (!follower) {
             return {
                 message: "User not found",
@@ -63,7 +65,7 @@ const removeFollower = async(userId, followerId) => {
         
         await unfollow({
             userId,
-            followerId
+            followedId
         });
 
         const followings = await findFollowing(userId);
@@ -90,7 +92,8 @@ const allFollowers = async(userId) => {
 
 const allFollowing = async(userId) => {
     try {
-        const followings = await findFollowing(userId);
+        const user = await findUserById(userId)
+        const followings = await findFollowing(user);
         return {
             followings,
         }

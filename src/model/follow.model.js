@@ -2,12 +2,12 @@ const { Sequelize, DataTypes } = require('sequelize');
 const { db } = require('../utils/db');
 
 
-const Follower = db.define('follow', {
+const Follower = db.define('Follow', {
   userId: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  followerId: {
+  followedId: {
     type: DataTypes.STRING,
     allowNull: false,
   }
