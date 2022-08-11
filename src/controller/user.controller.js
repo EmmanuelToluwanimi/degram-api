@@ -1,16 +1,34 @@
+const { addFollower, allFollowing, allFollowers, removeFollower, userProfile } = require("../service/user.service");
 const { errorResponse, okResponse } = require("../utils/constants");
 
 
 
-const followController = (req, res) => {
+const followController = async (req, res) => {
+
+    const { id: userId } = req?.user;
+    const { id: followerId } = req.params;
    
     try {
+
+        const {message, statusCode, followings} = await addFollower(userId, followerId);
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
+
         return okResponse({
             res,
             status: "success",
             statusCode: 200,
             message: "Successful request",
-            data: {}
+            data: {
+                followingsCount: followings.length,
+                followings,
+            }
         })
     } catch (error) {
         console.log(error?.message || error);
@@ -22,15 +40,31 @@ const followController = (req, res) => {
     }
 }
 
-const unfollowController = (req, res) => {
+const unfollowController = async (req, res) => {
+
+    const { id: userId } = req?.user;
+    const { id: followerId } = req.params;
    
     try {
+        const {message, statusCode, followings} = await removeFollower(userId, followerId);
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
+
         return okResponse({
             res,
             status: "success",
             statusCode: 200,
             message: "Successful request",
-            data: {}
+            data: {
+                followingsCount: followings.length,
+                followings,
+            }
         })
     } catch (error) {
         console.log(error?.message || error);
@@ -42,15 +76,30 @@ const unfollowController = (req, res) => {
     }
 }
 
-const getAllFollowersController = (req, res) => {
+const getAllFollowersController = async (req, res) => {
    
     try {
+        const {id} = req?.user;
+
+        const {message, statusCode, followers} = await allFollowers(id);
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
+
         return okResponse({
             res,
             status: "success",
             statusCode: 200,
             message: "Successful request",
-            data: {}
+            data: {
+                followersCount: followers.length,
+                followers,
+            }
         })
     } catch (error) {
         console.log(error?.message || error);
@@ -62,15 +111,30 @@ const getAllFollowersController = (req, res) => {
     }
 }
 
-const getAllFollowingController = (req, res) => {
+const getAllFollowingController = async (req, res) => {
    
     try {
+        const {id} = req?.user;
+
+        const {message, statusCode, followings} = await allFollowing(id);
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
+
         return okResponse({
             res,
             status: "success",
             statusCode: 200,
             message: "Successful request",
-            data: {}
+            data: {
+                followingsCount: followings.length,
+                followings,
+            }
         })
     } catch (error) {
         console.log(error?.message || error);

@@ -1,8 +1,8 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const { db } = require('../utils/db');
+const { Sequelize, DataTypes } = require("sequelize");
+const { db } = require("../utils/db");
+const Follower = require("./follow.model");
 
-
-const User = db.define('User', {
+const User = db.define("User", {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,7 +15,23 @@ const User = db.define('User', {
   uid: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
 });
+
+User.associate = (models) => {
+  // post association
+
+  User.belongsToMany(models.User, {
+    foreignKey: "userId",
+    as: "followers",
+    through: models.UserFollowers,
+  });
+
+  User.belongsToMany(models.User, {
+    foreignKey: "followerId",
+    as: "following",
+    through: models.UserFollowers,
+  });
+};
 
 module.exports = User;

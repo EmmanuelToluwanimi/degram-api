@@ -26,7 +26,7 @@ const registerUserController = async (req, res) => {
             status: "success",
             statusCode: 200,
             message: "User registered successfully",
-            data: user
+            data: {...user, accessToken}
         })
     } catch (error) {
         console.log(error?.message || error);
@@ -61,7 +61,7 @@ const LoginUserController = async(req, res) => {
             status: "success",
             statusCode: 200,
             message: "Login successfully",
-            data: user
+            data: {...user, accessToken}
         })
     } catch (error) {
         console.log(error?.message || error);

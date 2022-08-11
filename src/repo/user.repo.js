@@ -1,3 +1,4 @@
+const Follower = require("../model/follow.model");
 const User = require("../model/user.model");
 
 
@@ -13,10 +14,64 @@ const findUserByUsername = async (username) => {
     });
 }
 
-const findUserByUid = async (uid) => {
+const findUserById = async (id) => {
     return await User.findOne({
         where: {
-            uid
+            id
+        },
+        attributes: {
+            exclude: ['password']
+        }
+    });
+}
+
+const follow = async (data) => {
+    return await Follower.create(data);
+}
+
+const unfollow = async (data) => {
+    return await Follower.destroy({
+        where: {
+            userId: data.userId,
+            followerId: data.followerId
+        }
+    });
+}
+
+
+const isFollowing = async (userId, followerId) => {
+    try {
+        
+        const check = await Follower.findOne({
+            where: {
+                userId,
+                followerId,
+            },
+        });
+        return check ? true : false;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const findFollowing = async (userId) => {
+    return await Follower.findAll({
+        where: {
+            userId
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        }
+    });
+}
+
+const findFollowers = async (followerId) => {
+    return await Follower.findAll({
+        where: {
+            followerId
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
         }
     });
 }
@@ -25,5 +80,10 @@ const findUserByUid = async (uid) => {
 module.exports = {
     storeUser,
     findUserByUsername,
-    findUserByUid
+    findUserById,
+    follow,
+    unfollow,
+    findFollowers,
+    findFollowing,
+    isFollowing
 }

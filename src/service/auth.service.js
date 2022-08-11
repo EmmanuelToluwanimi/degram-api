@@ -16,7 +16,7 @@ const createUser = async (user) => {
         const uid = generateUid();
         user.password = await hashPassword(user.password);
         const newUser = await storeUser({...user, uid});
-        const accessToken = signJwt({uid}, {expiresIn: accessTokenTtl});
+        const accessToken = signJwt({id: newUser.id}, {expiresIn: accessTokenTtl});
 
         return {
             user: {
@@ -49,7 +49,7 @@ const loginUser = async (user) => {
             }
         }
 
-        const accessToken = signJwt({uid: userExists.uid}, {expiresIn: accessTokenTtl});
+        const accessToken = signJwt({id: userExists.id}, {expiresIn: accessTokenTtl});
 
         return {
             user: {
