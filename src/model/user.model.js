@@ -1,6 +1,8 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { db } = require("../utils/db");
 const Follower = require("./follow.model");
+const Posts = require("./post.model");
+
 
 const User = db.define("User", {
   username: {
@@ -18,15 +20,11 @@ const User = db.define("User", {
   },
 });
 
-// User.associate = (models) => {
-//   // post association
-  
-// };
-
-// User.hasMany(Post, { 
-//   foreignKey: 'userId',
-//   onDelete: 'CASCADE'
-// });
+User.hasMany(Posts, { 
+  foreignKey: 'userId',
+  onDelete: 'CASCADE'
+});
+Posts.belongsTo(User)
 
 User.belongsToMany(User, {
   foreignKey: "userId",
