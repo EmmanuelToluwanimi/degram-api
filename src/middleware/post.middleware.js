@@ -1,0 +1,48 @@
+const postSchema = require("../schema/post.schema");
+const { errorResponse, formatJoiMessage } = require("../utils/constants");
+
+const validatePostInput = (req, res, next)=>{
+
+    const {imgUrl, caption} = req.body;
+    if (!imgUrl || !caption) {
+        const message = "Please provide all required fields";
+        return errorResponse({
+            res,
+            statusCode: 422,
+            status: "fail",
+            message
+        })
+    }
+
+    const {error} = postSchema.validate(req.body);
+    if (error?.message) {
+        const message = formatJoiMessage(error.message);
+        console.log(error?.message || error);
+        return errorResponse({
+            res,
+            statusCode: 422,
+            status: "fail",
+            message
+        })
+    }
+    
+    next();
+}
+
+const validatePostQuery = (req, res, next)=>{
+    
+    const {id} = req.params;
+    if (!id) {
+        const message = "Please provide all required fields";
+        return errorResponse({
+            res,
+            statusCode: 422,
+            status: "fail",
+            message
+        })
+    }
+
+    next();
+}
+
+module.exports = {validatePostInput, validatePostQuery};
