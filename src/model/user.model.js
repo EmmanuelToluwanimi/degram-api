@@ -20,10 +20,7 @@ const User = db.define("User", {
   },
 });
 
-User.hasMany(Posts, { 
-  foreignKey: 'userId',
-  onDelete: 'CASCADE'
-});
+User.hasMany(Posts,);
 Posts.belongsTo(User)
 
 User.belongsToMany(User, {

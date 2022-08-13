@@ -6,6 +6,7 @@ const {
     getUserPosts,
     verifyPost
 } = require("../repo/post.repo");
+const { findUserById } = require("../repo/user.repo");
 
 
 const allPosts = async () => {
@@ -34,13 +35,14 @@ const addPost = async (userId, post) => {
     }
 }
 
-const removePost = async (postId) => {
+const removePost = async (userId, postId) => {
     try {
-
-        const check = await verifyPost(postId);
+        const user = await findUserById(userId);
+        const check = await verifyPost(user, postId);
+        console.log(check);
         if (!check) {
             return {
-                message: "You are not authorized to delete this post",
+                message: "You are not authorized to perform this action",
                 statusCode: 401
             }
         }
@@ -58,6 +60,13 @@ const removePost = async (postId) => {
 const singlePost = async (postId) => {
     try {
         const post = await getSinglePost(postId);
+        if (!post) {
+            return {
+                message: "No post found",
+                statusCode: 404
+            }
+        }
+
         return {
             post
         }
@@ -69,7 +78,15 @@ const singlePost = async (postId) => {
 const getAllUserPosts = async (userId) => {
     try {
         const user = await findUserById(userId);
+        if (!user) {
+            return {
+                message: "No user found",
+                statusCode: 404
+            }
+        }
+
         const posts = await getUserPosts(user);
+        
         return {
             posts
         }

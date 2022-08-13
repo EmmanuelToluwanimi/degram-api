@@ -9,7 +9,7 @@ const decodeToken = async (req, res, next) => {
             res,
             status: "fail",
             statusCode: 400,
-            message: "No token provided",
+            message: "Please login or signup to continue",
         })
     }
    
@@ -46,7 +46,7 @@ const decodeToken = async (req, res, next) => {
         return errorResponse({
             res,
             status: "fail",
-            message: "Invalid token",
+            message: "Please login or signup to continue",
         })
     }
 }

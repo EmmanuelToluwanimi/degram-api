@@ -11,7 +11,7 @@ const { decodeToken } = require("../middleware/user.middleware");
 const {validatePostInput, validatePostQuery} = require("../middleware/post.middleware");
 
 const router = Router();
-const { INDEX, ID } = ROUTES;
+const { INDEX, ID, USERPOST } = ROUTES;
 
 /**
  * @idea: paginate or limit the number of posts to be returned
@@ -24,6 +24,6 @@ router.get(INDEX, getAllPostsController);
 router.post(INDEX, decodeToken, validatePostInput, createPostController);
 router.delete(ID, decodeToken, validatePostQuery, deletePostController);
 router.get(ID, decodeToken, validatePostQuery, getSinglePostController);
-router.get(`${ID}/user`, decodeToken, validatePostQuery, getAllUserPostsController);
+router.get(USERPOST, decodeToken, validatePostQuery, getAllUserPostsController);
 
 module.exports = router;

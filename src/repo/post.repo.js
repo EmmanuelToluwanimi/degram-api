@@ -1,12 +1,25 @@
 const Posts = require("../model/post.model");
 const User = require("../model/user.model");
 
+const postOptions = {
+    attributes: {
+        exclude: ['createdAt', 'updatedAt']
+    },
+    include: [{
+        model: User,
+        attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt']
+        }
+    }]
+}
+
 const getSinglePost = async (postId) => {
     try {
         return await Posts.findOne({
             where: {
                 id: postId
-            }
+            },
+            ...postOptions
         });
     } catch (error) {
         throw error;
@@ -23,7 +36,7 @@ const createPost = async (user, post) => {
 
 const getUserPosts = async (user) => {
     try {
-        return await user.getPost();
+        return await user.getPosts(postOptions);
     } catch (error) {
         throw error;
     }
@@ -43,7 +56,7 @@ const deletePost = async (postId) => {
 
 const getAllPosts = async () => {
     try {
-        return await Posts.findAll();
+        return await Posts.findAll(postOptions);
     } catch (error) {
         throw error;
     }
@@ -51,12 +64,7 @@ const getAllPosts = async () => {
 
 const verifyPost = async (user, postId) => {
     try {
-        const post = await getSinglePost(postId);
-        if (post.userId === user.id) {
-            return true;
-        } else {
-            return false;
-        }
+        return await user.hasPost(postId);
     } catch (error) {
         throw error;
     }

@@ -4,7 +4,7 @@ const { errorResponse, formatJoiMessage } = require("../utils/constants");
 const validatePostInput = (req, res, next)=>{
 
     const {imgUrl, caption} = req.body;
-    if (!imgUrl || !caption) {
+    if (!imgUrl && !caption) {
         const message = "Please provide all required fields";
         return errorResponse({
             res,

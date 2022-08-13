@@ -29,6 +29,7 @@ const ROUTES = {
   UNFOLLOW: "/unfollow/:id",
   GET_FOLLOWERS: "/followers",
   GET_FOLLOWING: "/following",
+  USERPOST: "/:id/user",
   ID: "/:id",
   INDEX: "/",
 };

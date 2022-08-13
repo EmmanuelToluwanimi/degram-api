@@ -9,11 +9,11 @@ const Posts = db.define('Post', {
 //   },
   imgUrl: {
     type: DataTypes.STRING,
-    // allowNull: false,
+    allowNull: false,
   },
   caption: {
     type: DataTypes.STRING,
-    // allowNull: false,
+    allowNull: false,
   }
 });
 

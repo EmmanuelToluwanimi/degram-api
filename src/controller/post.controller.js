@@ -12,7 +12,7 @@ const createPostController = async (req, res) => {
    
     try {
         const {id} = req?.user;
-        const {post} = req.body;
+        const post = req.body;
 
         const {posts} = await addPost(id, post)
 
@@ -59,7 +59,16 @@ const deletePostController = async (req, res) => {
    
     try {
         const {id} = req.params;
-        const {posts} = await removePost(id)
+        const {id: userId} = req?.user;
+        const {posts, message, statusCode} = await removePost(userId, id)
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
 
         return okResponse({
             res,
@@ -83,7 +92,15 @@ const getSinglePostController = async (req, res) => {
     try {
 
         const {id} = req.params;
-        const {post} = await singlePost(id)
+        const {post, message, statusCode} = await singlePost(id)
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
         
         return okResponse({
             res,
@@ -106,8 +123,16 @@ const getAllUserPostsController = async (req, res) => {
        
     try {
 
-        const {id} = req?.user;
-        const {posts} = await getAllUserPosts(id)
+        const {id} = req.params;
+        const {posts, message, statusCode} = await getAllUserPosts(id)
+        if (message) {
+            return errorResponse({
+                res,
+                status: "fail",
+                message,
+                statusCode
+            })
+        }
 
         return okResponse({
             res,
