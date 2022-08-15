@@ -6,7 +6,7 @@ const conversationRouter = require("./conversation");
 const messageRouter = require("./message");
 
 
-const {HEALTHCHECK, AUTH, USER, POST} = ROUTES
+const {HEALTHCHECK, AUTH, USER, POST, CONVERSATION, MESSAGE} = ROUTES
 
 /**
  * 
@@ -17,8 +17,8 @@ function routes(app) {
     app.use(AUTH, authRouter);
     app.use(USER, userRouter);
     app.use(POST, postRouter);
-    app.use(POST, conversationRouter);
-    app.use(POST, messageRouter);
+    app.use(CONVERSATION, conversationRouter);
+    app.use(MESSAGE, messageRouter);
 }
 
 module.exports = routes;
