@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { db } = require("../utils/db");
+const Conversation = require("./conversation.model");
 const Follower = require("./follow.model");
 const Posts = require("./post.model");
 
@@ -20,8 +21,13 @@ const User = db.define("User", {
   },
 });
 
-User.hasMany(Posts,);
+User.hasMany(Posts);
 Posts.belongsTo(User)
+
+User.hasMany(Conversation);
+Conversation.belongsTo(User, { as: "user1" });
+Conversation.belongsTo(User, { as: "user2" });
+
 
 User.belongsToMany(User, {
   foreignKey: "userId",

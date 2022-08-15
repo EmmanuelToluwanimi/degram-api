@@ -23,6 +23,8 @@ const ROUTES = {
   AUTH: "/api/auth",
   USER: "/api/user",
   POST: "/api/posts",
+  CONVERSATION: "/api/conversations",
+  MESSAGE: "/api/messages",
   LOGIN: "/login",
   REGISTER: "/register",
   FOLLOW: "/follow/:id",
@@ -30,6 +32,7 @@ const ROUTES = {
   GET_FOLLOWERS: "/followers",
   GET_FOLLOWING: "/following",
   USERPOST: "/:id/user",
+  CONVERSATION: "/conversation",
   ID: "/:id",
   INDEX: "/",
 };
