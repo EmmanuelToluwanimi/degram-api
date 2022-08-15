@@ -32,7 +32,6 @@ const ROUTES = {
   GET_FOLLOWERS: "/followers",
   GET_FOLLOWING: "/following",
   USERPOST: "/:id/user",
-  CONVERSATION: "/conversation",
   ID: "/:id",
   INDEX: "/",
 };
