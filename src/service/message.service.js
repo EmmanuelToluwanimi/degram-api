@@ -23,8 +23,15 @@ const retrieveMessages = async (conversationId) => {
 const sendMessage = async (data) => {
     const {senderId, receiverId} = data
     try {
+        if(senderId === receiverId) {
+            return {
+                message: "You cannot send message to yourself",
+                statusCode: 400,
+            }
+        }
+
         const {conversation} = await initiateConversation(senderId, receiverId);
-        const newMessage = await storeMessage({...data, conversationId: conversation.id});
+        const newMessage = await storeMessage(conversation, data)
         return {
             chat: newMessage,
         }

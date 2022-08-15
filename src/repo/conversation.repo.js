@@ -33,10 +33,10 @@ const getUserConversations = async (userId) => {
     try {
         return await Conversation.findAll({
             where: {
-                user1Id: userId,
-                user2Id: {
-                    [Op.ne]: userId
-                }
+                [Op.or]: [
+                    {user1Id: userId},
+                    {user2Id: userId},
+                ]
             }
         });
     } catch (error) {

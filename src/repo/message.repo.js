@@ -1,8 +1,10 @@
+const Conversation = require("../model/conversation.model");
 const Message = require("../model/message.model");
 
-const storeMessage = async (message) => {
+
+const storeMessage = async (conversation, message) => {
     try {
-        return await Message.create(message);
+        return await conversation.createMessage(message);
     } catch (error) {
         throw error;
     }
