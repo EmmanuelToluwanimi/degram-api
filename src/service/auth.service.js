@@ -20,7 +20,7 @@ const createUser = async (user) => {
 
         return {
             user: {
-                uid: newUser.uid,
+                id: newUser.id,
                 username: newUser.username,
             },
             accessToken
@@ -53,7 +53,7 @@ const loginUser = async (user) => {
 
         return {
             user: {
-                uid: userExists.uid,
+                id: userExists.id,
                 username: userExists.username,
             },
             accessToken

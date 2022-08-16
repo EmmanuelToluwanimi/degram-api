@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const Conversation = require("../model/conversation.model");
+const User = require("../model/user.model");
 
 const getConversation = async (user1Id, user2Id) => {
     try {
@@ -37,7 +38,20 @@ const getUserConversations = async (userId) => {
                     {user1Id: userId},
                     {user2Id: userId},
                 ]
-            }
+            },
+            include: [{
+                model: User,
+                as: 'user1',
+                attributes: {
+                    exclude: ['password', 'createdAt', 'updatedAt']
+                }
+            }, {
+                model: User,
+                as: 'user2',
+                attributes: {
+                    exclude: ['password', 'createdAt', 'updatedAt']
+                }
+            }],
         });
     } catch (error) {
         throw error;
