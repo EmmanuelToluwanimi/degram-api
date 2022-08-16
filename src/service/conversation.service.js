@@ -28,7 +28,19 @@ const getAllConversations = async (userId) => {
     }
 }
 
+const getSingleConversation = async (userId, anotherUserId) => {
+    try {
+        const conversation = await getConversation(userId, anotherUserId);
+        return {
+            conversation: conversation || {}
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     initiateConversation,
     getAllConversations,
+    getSingleConversation
 }
