@@ -13,8 +13,8 @@ const createPostController = async (req, res) => {
     try {
         const {id} = req?.user;
         const post = req.body;
-
-        const {posts} = await addPost(id, post)
+        const imgUrl = req.file?.path;
+        const {posts} = await addPost(id, {...post, imgUrl})
 
         return okResponse({
             res,

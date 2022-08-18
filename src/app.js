@@ -17,6 +17,7 @@ module.exports = {io}
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 io.on('connection', (socket) => {
   console.log('a user connected');

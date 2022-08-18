@@ -10,7 +10,8 @@ const postOptions = {
         attributes: {
             exclude: ['password', 'createdAt', 'updatedAt']
         }
-    }]
+    }],
+    order: [ [ 'createdAt', 'DESC' ]]
 }
 
 const getSinglePost = async (postId) => {
