@@ -49,7 +49,7 @@ const generateRandomeNumber = () => {
 };
 
 const storage = multer.diskStorage({
-  destination: "uploads",
+  destination: "./uploads",
   filename: (req, file, cb) => {
     cb(null, generateRandomeNumber()+file.originalname);
   },
