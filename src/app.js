@@ -20,7 +20,15 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  // console.log('a user connected', socket.id);
+  socket.on('join', (data) => {
+    console.log("dataaaaaaa", data);
+    socket.broadcast.emit('join', data);
+  })
+  socket.on('chat', (data) => {
+    console.log("dataaaaaaa", data);
+    socket.broadcast.emit('chat', data);
+  })
 });
 
 server.listen(PORT, async() => {
